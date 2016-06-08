@@ -15,23 +15,28 @@
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<script type="text/javascript">
-		var clicks = 0;
 		var cats = [
-    		{"name":"Grump", "picUrl":"http://catgallery.top/wp-content/uploads/2016/04/grumpy-cat-breed-600px-grumpy-purebred-cat.jpg"},
-    		{"name":"Happy", "picUrl":"http://www.catster.com/wp-content/uploads/2015/06/600px-cat-relaxing.jpg"}
+    		{"name":"Grump", "picUrl":"http://catgallery.top/wp-content/uploads/2016/04/grumpy-cat-breed-600px-grumpy-purebred-cat.jpg", "picClass": "grump", "clickCount": 0},
+    		{"name":"Happy", "picUrl":"http://www.catster.com/wp-content/uploads/2015/06/600px-cat-relaxing.jpg", "picClass": "happy", "clickCount": 0}
     	];
 		for(var i = 0; i < cats.length; i++) {
 			$('#cat-content:last').append('<div class="myCat'+ i +'">' + cats[i].name);
-			$('.myCat' + i).append('<img class="cat'+ i +'" src=' + cats[i].picUrl + '>');
-			$('.myCat' + i).append('<div class="clicker"></div>');
-			$(".cat" + i).click(function() {
-				clicks = clicks + 1;
-				var timesClicked = ("You've clicked the cat " + clicks + " times!");
-				timesClicked = timesClicked.replace(clicks, clicks);
-				$(".clicker").text(timesClicked);
-			});
-			$('.myCat:last').append("</div>");
+			$('.myCat' + i).append('<img class="'+ cats[i].picClass +'" src=' + cats[i].picUrl + '>');
+			$('.myCat' + i).append('<div class="clicker'+ i +'"></div>');
+			var clickCount = cats[i].clickCount;
 		};
+		var grumpClick = clickCount;
+		$('.grump').on("click", function(){
+			grumpClick++;
+			$(".clicker0").text("You clicked Grump "+ grumpClick +" times!")
+			// console.log(grumpClick);
+		});
+		var happyClick = clickCount;
+		$('.happy').on("click", function(){
+			happyClick++;
+			$(".clicker1").text("You clicked Happy "+ happyClick +" times!")
+			// console.log(happyClick);
+		});
 	</script>
 </body>
 </html>
