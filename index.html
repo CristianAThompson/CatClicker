@@ -6,99 +6,101 @@
 		Cat Clicker
 	</title>
 	<style type="text/css">
+	img {
+		max-width: 100%;
+	}
+	ul {
+		list-style-type: none;
+		padding: 0;
+	}
+	button {
+		display: block;
+	}
+	.hidden {
+		display: hidden;
+	}
 	.container {
 		width: 100%;
 	}
 	.kitty {
-		max-width: 50%;
-		display: inline-block;
+		display: block;		
 	}
-	img {
-		max-width: 100%;
+	.name {
+		display: block;
+		text-align: center;
+	}
+	#cat-content {
+		width: 50%;
+		display: inline-block;
+		float: right;
+	}
+	#text-content {
+		width: 40%;
+		display: inline-block;
+		float:left;
+	}
+	#list-content {
+		width: 10%;
+		display: inline-block;
+		float: left;
 	}
 	</style>
 </head>
 <body>
 	<div id="container">
-		<button onclick = grumpDisplay()> Click to Load Grump</button>
-		<button onclick = happyDisplay()> Click to Load Happy</button>
-		<div id="cat-content">
-			<h3>Cat Clicker</h3>
+		<div>
+			<ul id="list-content"></ul>
+		</div>
+		<div id="text-content">
+			<div><h3>Cat Clicker</h3></div>
 			<p>This is a simple game, click the cat to increase the number by one.</p>
+		</div>
+		<div id="cat-content">
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<script type="text/javascript">
 		var cats = [
-    		{"name":"Grump", "picUrl":"http://catgallery.top/wp-content/uploads/2016/04/grumpy-cat-breed-600px-grumpy-purebred-cat.jpg", "picClass": "grump", "clickCount": 0},
-    		{"name":"Happy", "picUrl":"http://www.catster.com/wp-content/uploads/2015/06/600px-cat-relaxing.jpg", "picClass": "happy", "clickCount": 0}
+    		{"name":"Grump", "buttonClass": "gButton" , "picUrl":"http://catgallery.top/wp-content/uploads/2016/04/grumpy-cat-breed-600px-grumpy-purebred-cat.jpg", "picClass": "grump", "clickCount": 0},
+    		{"name":"Sleepy", "buttonClass": "slButton" ,  "picUrl":"http://www.catster.com/wp-content/uploads/2015/06/600px-cat-relaxing.jpg", "picClass": "sleepy", "clickCount": 0},
+    		{"name":"Stare", "buttonClass": "stButton" ,  "picUrl":"http://i.imgur.com/73D5L.jpg", "picClass": "stare", "clickCount": 0},
+    		{"name":"Hide", "buttonClass": "hButton" ,  "picUrl":"http://www.catster.com/wp-content/uploads/2015/06/600px-Cat_peeking_out_from_couch.jpg", "picClass": "hide", "clickCount": 0},
+    		{"name":"Ron", "buttonClass": "rButton" ,  "picUrl":"http://i.imgur.com/W45iy.jpg", "picClass": "ron", "clickCount": 0}
     	];
-
-    	var catArray = [];
-    	var grumpDisplay = function () {
-    		$('#cat-content').innerHTML = "";
-			for(var i = 0; i < cats.length - 1; i++) {
-				// $('#cat-content').append('<div class="'+ myC +' kitty">' + cats[i].name);
-				var myC = ("myCat" + i);
-				var catContent = $('#cat-content:last').append('<div class="'+ myC +' kitty">' + cats[i].name + "</div>");
-				// $('.myCat' + i).append('<img class="'+ cats[i].picClass +'" src=' + cats[i].picUrl + '>');
-				// var clicker = ("clicker" + i);
-				// $('.myCat' + i).append('<div class="'+ clicker +'"></div>');
-				var clickCount = cats[i].clickCount;
-				var catPic = document.createElement('img');
-				catPic.className += cats[i].picClass;
-				catPic.setAttribute('src', cats[i].picUrl);
-				var catClass = cats[i].picClass;
-				var catElem = document.createElement("div");
-				catElem.className += cats[i]
-					catPic.addEventListener('click', (function(clickCount, catClass) {
-	    			return function() {
+		for(var i = 0; i < cats.length; i++) {
+			var currentCat = cats[i];
+			var cName = cats[i].name;
+			var butClass = cats[i].buttonClass;
+			var catContent = $('#cat-content');
+			catContent.prepend('<div class="kitty '+ butClass +'">' );
+			var textContent = $('#text-content:last');
+			var listContent = $('#list-content:last');
+			var clickCount = cats[i].clickCount;
+			var catPic = document.createElement('img');
+			var catClass = cats[i].picClass;
+			var catElem = document.createElement('div');
+			var nameButton = document.createElement('button');
+			nameButton.textContent = (cats[i].name);
+			nameButton.addEventListener('click', (function(butClass, cName, catPic) {
+				return function() {
+					$('.kitty').remove();
+					catContent.append('<div class="kitty '+ butClass +'">' );
+					$('.'+ butClass).append(catPic);
+					textContent.text("This is a simple game, click the cat to increase the number by one.\n" + "You Selected, "+ cName +"!");
+				};
+			})(butClass, cName, catPic));
+			catPic.className += cats[i].picClass;
+			catPic.setAttribute('src', cats[i].picUrl);
+			catElem.className += currentCat;
+			catPic.addEventListener('click', (function(clickCount, catClass) {
+    			return function() {
 	    			clickCount++;
 					catElem.textContent = ("You clicked " + catClass + " " + clickCount + " times!");
-					catContent.prepend(catElem);
-	    		};
-				})(clickCount, catClass));
-				catContent.append(catPic);
-
-			};
+					textContent.append(catElem);
+    			};
+			})(clickCount, catClass));
+			listContent.append(nameButton);
 		};
-		var happyDisplay = function () {
-			for(var i = 1; i < cats.length; i++) {
-				var myC = ("myCat" + i);
-				var catContent = $('#cat-content:last').append('<div class="'+ myC +' kitty">' + cats[i].name);
-				// $('.myCat' + i).append('<img class="'+ cats[i].picClass +'" src=' + cats[i].picUrl + '>');
-				// var clicker = ("clicker" + i);
-				// $('.myCat' + i).append('<div class="'+ clicker +'"></div>');
-				var clickCount = cats[i].clickCount;
-				var catPic = document.createElement('img');
-				catPic.className += cats[i].picClass;
-				catPic.setAttribute('src', cats[i].picUrl);
-				var catClass = cats[i].picClass;
-				var catElem = document.createElement("div");
-				catElem.className += cats[i]
-					catPic.addEventListener('click', (function(clickCount, catClass) {
-	    			return function() {
-	    			clickCount++;
-					catElem.textContent = ("You clicked " + catClass + " " + clickCount + " times!");
-					catContent.prepend(catElem);
-	    		};
-				})(clickCount, catClass));
-				catContent.append(catPic);
-
-			};
-		};
-		// var grumpClick = clickCount;
-		// $('.grump').on("click", function(){
-		// 	grumpClick++;
-		// 	$(".clicker0").text("You clicked Grump "+ grumpClick +" times!")
-		// 	// console.log(grumpClick);
-		// });
-		// var happyClick = clickCount;
-		// $('.happy').on("click", function(){
-		// 	happyClick++;
-		// 	$(".clicker1").text("You clicked Happy "+ happyClick +" times!")
-		// 	// console.log(happyClick);
-		// });
 	</script>
 </body>
 </html>
