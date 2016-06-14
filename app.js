@@ -13,6 +13,21 @@ var octopus = {
   init: function() {
     meowdel.currentCat = meowdel.cats[0];
 
+    $('#enable-admin').on('click', function() {
+      $('#admin-content').removeClass('hidden');
+    });
+    $('#admin-cancel').on('click', function() {
+      $('#admin-content').addClass('hidden');
+    });
+    $('#admin-submit').on('click', function() {
+      var currentCat = octopus.getCurrentCat();
+      currentCat.name = $('#admin-name').val();
+      currentCat.picUrl = $('#admin-img').val();
+      currentCat.clickCount = $('#admin-clicks').val();
+      $('#admin-content').addClass('hidden');
+      catView.render();
+    });
+
     catListView.init();
     catView.init();
   },
@@ -43,12 +58,9 @@ var catView = {
     this.catNameElem = document.getElementById('cat-name');
     this.catImgElem = document.getElementById('cat-img');
     this.catClickCount = document.getElementById('click-count');
-    this.adminEnable = document.getElementById('enable-admin');
     this.adminName = document.getElementById('admin-name');
     this.adminImg = document.getElementById('admin-img');
     this.adminClicks = document.getElementById('admin-clicks');
-    this.adminCancel = document.getElementById('admin-cancel');
-    this.adminSubmit = document.getElementById('admin-submit');
 
     this.catImgElem.addEventListener('click', function(){
       octopus.clickIncrease();
@@ -66,19 +78,6 @@ var catView = {
     this.adminImg.value = currentCat.picUrl;
     this.adminClicks.value = currentCat.clickCount;
 
-    this.adminEnable.addEventListener('click', function() {
-      $('#admin-content').toggleClass('hidden');
-    });
-    this.adminCancel.addEventListener('click', function() {
-      $('#admin-content').addClass('hidden');
-    });
-    this.adminSubmit.addEventListener('click', function() {
-      currentCat.name = $('#admin-name').val();
-      currentCat.picUrl = $('#admin-img').val();
-      currentCat.clickCount = $('#admin-clicks').val();
-      $('#admin-content').addClass('hidden');
-      catView.render();
-    });
   }
 };
 
